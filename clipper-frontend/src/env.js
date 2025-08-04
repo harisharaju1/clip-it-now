@@ -21,6 +21,7 @@ export const env = createEnv({
     AWS_REGION: z.string().min(2).max(20),
     PROCESS_VIDEO_ENDPOINT: z.string().url(),
     PROCESS_VIDEO_ENDPOINT_AUTH: z.string(),
+    STRIPE_SECRET_KEY: z.string().min(2).max(100),
   },
 
   /**
@@ -46,6 +47,7 @@ export const env = createEnv({
     AWS_REGION: process.env.AWS_REGION,
     PROCESS_VIDEO_ENDPOINT: process.env.PROCESS_VIDEO_ENDPOINT,
     PROCESS_VIDEO_ENDPOINT_AUTH: process.env.PROCESS_VIDEO_ENDPOINT_AUTH,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

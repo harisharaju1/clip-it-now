@@ -75,7 +75,7 @@ export const processVideo = inngest.createFunction(
         });
         // Create clips in DB
         const clipsFound = await step.run("create-clips-in-db", async () => {
-          const folderPrefix = s3Key.split("/")[0]!;
+          const folderPrefix = s3Key.split("/")[0];
 
           const allKeys = await listS3ObjectsByPrefix(folderPrefix);
 
