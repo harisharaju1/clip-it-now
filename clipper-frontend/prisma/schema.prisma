@@ -55,14 +55,53 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
+    id               String         @id @default(cuid())
+    name             String?
+    email            String?        @unique
+    emailVerified    DateTime?
+    password         String?
+    credits          Int            @default(10)
+    stripeCustomerId String?        @unique
+    image            String?
+    accounts         Account[]
+    sessions         Session[]
+    posts            Post[]
+    uploadedFiles    UploadedFile[]
+    clips            Clip[]
+}
+
+model UploadedFile {
+    id          String   @id @default(cuid())
+    s3Key       String
+    displayName String?
+    uploaded    Boolean  @default(false)
+    status      String   @default("queued") // "queued", "processed", "no-credits"
+    userId      String
+    // fileName    String
+    // filePath    String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    clips Clip[]
+
+    @@index([s3Key])
+}
+
+model Clip {
+    id             String   @id @default(cuid())
+    s3Key          String
+    userId         String
+    uploadedFileId String?
+    // startTime Int
+    // endTime   Int
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+
+    user User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    file UploadedFile? @relation(fields: [uploadedFileId], references: [id], onDelete: Cascade)
+
+    @@index([s3Key])
 }
 
 model VerificationToken {
